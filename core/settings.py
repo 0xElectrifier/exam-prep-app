@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'corsheaders',
+    'cloudinary',
     'drf_spectacular',
     'rest_framework',
     'rest_framework.authtoken',
