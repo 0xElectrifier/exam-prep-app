@@ -18,8 +18,8 @@ class CustomUser(BaseModel, AbstractBaseUser):
 
     objects = CustomUserManager()
 
-    EMAIL_FIELD = "email"
-    USERNAME_FIELD = "email"
+    EMAIL_FIELD = "username"
+    USERNAME_FIELD = "username"
 
     def __str__(self):
-        return self.email
+        return self.username
