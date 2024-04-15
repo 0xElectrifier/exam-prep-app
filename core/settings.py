@@ -32,9 +32,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-
-ALLOWED_HOSTS = ['127.0.0.1', 'exam-prep-app.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'exam-prep-app.onrender.com']
 
 CORS_ALLOWED_ORIGINS = (
     'http://localhost:3000',
@@ -44,7 +42,11 @@ CORS_ALLOWED_ORIGINS = (
 
 # Application definition
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 AUTH_USER_MODEL = 'authentication.CustomUser'
+
+AUTHENTICATION_METHOD = 'username'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -85,11 +87,11 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware'
 ]
 
-
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'auth_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
+    'LOGIN_SERIALIZER': 'authentication.serializers.LoginSerializer',
 }
 
 REST_FRAMEWORK = {
