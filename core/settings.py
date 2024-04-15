@@ -34,7 +34,7 @@ DEBUG = True
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'exam-prep-app.onrender.com']
 
 CORS_ALLOWED_ORIGINS = (
     'http://localhost:3000',
