@@ -89,12 +89,16 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'auth_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
 }
+
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
     "EXCEPTION_HANDLER": "core.views.custom_exception_handler",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 SIMPLE_JWT = {
