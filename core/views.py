@@ -5,7 +5,7 @@ from rest_framework.views import exception_handler
 from rest_framework.response import Response
 import logging
 
-from .exceptions import ApplicationError, InternalError
+from .exceptions import ApplicationError
 
 
 # logger = logging.getLogger(__name__)
@@ -42,8 +42,9 @@ def custom_exception_handler(exc, context):
                     }
                 })
             return Response(data, status=400)
-        elif isinstance(exc, InternalError):
-            return Response(data={}, status=500)
+        # @NOTE: I do not think there is need for this in this project
+        # elif isinstance(exc, InternalError):
+        #     return Response(data={}, status=500)
 
         return response
 
