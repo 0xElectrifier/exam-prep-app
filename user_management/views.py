@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
-from drf_spectacular.types import OpenApiTypes
 from .serializers import UserSerializer
+from authentication.models import CustomUser
 
 class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -35,7 +35,7 @@ class UserProfileAPIView(APIView):
         description='Delete user account',
         responses={204: None},
     )
-    def delete(self, request):
-        user = request.user
+    def delete(self):
+        user = CustomUser.objects.get(username = self.request.user.username)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
