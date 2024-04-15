@@ -7,6 +7,5 @@ def generate_user_id():
     """
 
     user_id = str(uuid.uuid4()).split('-')
-    print(user_id)
 
     return ''.join(user_id)
