@@ -31,6 +31,8 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 ALLOWED_HOSTS = ['127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = (
@@ -41,6 +43,8 @@ CORS_ALLOWED_ORIGINS = (
 
 # Application definition
 
+AUTH_USER_MODEL = 'authentication.CustomUser'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,11 +53,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 3rd party
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     'corsheaders',
-    'dj_rest_auth',
     'drf_spectacular',
     'rest_framework',
     'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     # our apps
     "authentication",
     "user_management",
@@ -71,8 +80,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'auth_token',
+    'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
+}
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_RENDERER_CLASSES": [
@@ -80,6 +96,12 @@ REST_FRAMEWORK = {
     ],
     "EXCEPTION_HANDLER": "core.views.custom_exception_handler",
 }
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'user_id'
+}
+
+SITE_ID = 1
 
 ROOT_URLCONF = 'core.urls'
 
