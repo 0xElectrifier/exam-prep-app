@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'drf_spectacular',
     'rest_framework',
+    'rest_framework.authtoken',
     # our apps
     "authentication",
     "user_management",
@@ -77,7 +78,7 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
-    "TOKEN_MODEL": None
+    "EXCEPTION_HANDLER": "core.views.custom_exception_handler",
 }
 
 ROOT_URLCONF = 'core.urls'
