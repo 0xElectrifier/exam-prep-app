@@ -31,6 +31,8 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 ALLOWED_HOSTS = ['127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = (
@@ -94,6 +96,12 @@ REST_FRAMEWORK = {
     ],
     "EXCEPTION_HANDLER": "core.views.custom_exception_handler",
 }
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'user_id'
+}
+
+SITE_ID = 1
 
 ROOT_URLCONF = 'core.urls'
 
