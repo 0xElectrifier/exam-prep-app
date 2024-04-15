@@ -16,9 +16,9 @@
 
 ### Authenticated Endpoints (require valid authentication token):
 
-- [ ] GET `/api/v1/users/`: Retrieve user profile information. Returns: User object containing details like username, email (optional).
-- [ ] PUT `/api/v1/users/`: Update user profile information. Returns: Updated user object.
-- [ ] DELETE `/api/v1/users/`: Delete the user's account. Returns: Success message upon deletion.
+- [ ] GET `/api/v1/user/`: Retrieve user profile information. Returns: User object containing details like username, email (optional).
+- [ ] PUT `/api/v1/user/`: Update user profile information. Returns: Updated user object.
+- [ ] DELETE `/api/v1/user/`: Delete the user's account. Returns: Success message upon deletion.
 
 ## Image Handling
 
