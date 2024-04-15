@@ -53,6 +53,12 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'drf_spectacular',
     'rest_framework',
+    # our apps
+    "authentication",
+    "user_management",
+    "image_handling",
+    "flashcard_management",
+    "text_extraction_and_summarization"
 ]
 
 MIDDLEWARE = [
