@@ -73,7 +73,8 @@ INSTALLED_APPS = [
     "user_management",
     "image_handling",
     "flashcard_management",
-    "text_extraction_and_summarization"
+    "text_extraction",
+    "text_summarization"
 ]
 
 MIDDLEWARE = [
