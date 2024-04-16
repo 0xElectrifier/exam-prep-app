@@ -5,7 +5,7 @@ from .models import Image
 from authentication.models import CustomUser
 from .serialaizers import ImageSerializer, ImageUploadSerializer
 
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from rest_framework import status
 from .serialaizers import ImageUploadSerializer
 from rest_framework.parsers import MultiPartParser, FormParser

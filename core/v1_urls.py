@@ -13,4 +13,5 @@ urlpatterns = [
     path('auth/signup/', include('dj_rest_auth.registration.urls')),
     path("",include("user_management.urls"), name="user_management"),
     path("images/", include("image_handling.urls"), name="image_handling"),
+    path("text/", include("text_extraction.urls"), name="text_extraction"),
 ]
