@@ -12,8 +12,9 @@ prompt_rules = """Given the text below, create a summary, one which clear enough
 Use the following rules to format the output:
 1. Use bullet points to arrange points.
 2. Similar points should be grouped in paragraphs.
-# 3. Use '||~||' as the delimiter to seperate subsections.
-3. Format the response as a markdown.
+3. Use '||~||' as the delimiter to seperate subsections.
+4. Each subsection delimited must have it heading, indicating what info it contains.
+5. Format the response as a markdown.
 Text:
 """
 class SummaryCreationSerializer(serializers.ModelSerializer):
@@ -84,5 +85,6 @@ class SummarizedTextSerializer(serializers.ModelSerializer):
         sections = text.split(settings.TS_DELIMITER)
         while (i < len(sections)):
             sections[i] = sections[i].strip()
+            i += 1
 
         return sections
