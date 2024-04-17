@@ -134,11 +134,16 @@ class FlashcardListView(APIView):
         category_id = request.data.get('category')
         question = request.data.get('question')
         answer = request.data.get('answer')
-        if not image_id or not category_id or not question or not answer:
+
+        print(request.data)
+        if not category_id or not question or not answer:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         category = FlashcardCategory.objects.get(id=category_id)
-        image = Image.objects.get(image_id=image_id)
+        if image_id:
+            image = Image.objects.get(image_id=image_id)
+        else:
+            image=None
         new_flashcard = Flashcard.objects.create(
             category=category,
             image=image,
@@ -222,6 +227,7 @@ class GenerateFlashcards(APIView):
         number_of_cards = int(request.data.get('number_of_cards', 15))
         text = request.data.get('text')
         category_id = request.data.get('category')
+        print(text)
 
         defaults = {
             'model': 'models/text-bison-001',
@@ -257,6 +263,7 @@ class GenerateFlashcards(APIView):
             try: 
                 results = json.loads(response.result)
             except ValueError as e:
+                print(e)
                 return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         response_data = []
