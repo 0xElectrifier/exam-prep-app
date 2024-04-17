@@ -15,4 +15,5 @@ urlpatterns = [
     path("images/", include("image_handling.urls"), name="image_handling"),
     path("text/", include("text_extraction.urls"), name="text_extraction"),
     path("flashcards/", include("flashcard_management.urls"), name="flashcard_management"),
+    path("summarize/", include("text_summarization.urls"), name="text_summarization"),
 ]
