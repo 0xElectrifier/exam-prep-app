@@ -12,3 +12,11 @@ class ApplicationError(Exception):
         self.status_code = kwargs.get('status_code')
         if not self.status_code:
             self.status_code = 400
+
+
+class ValidationError(ApplicationError):
+
+    def __init__(self, *args, **kwargs):
+        if not kwargs.get('message'):
+            kwargs.update({'message': "Validation Failed"})
+        super().__init__(*args, **kwargs)
