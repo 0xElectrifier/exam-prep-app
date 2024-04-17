@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from .models import FlashcardCategory, Flashcard
-from .serializers import FlashcardCategorySerializer, FlashcardSerializer, FlashcardRequestSerializer
+from .serializers import FlashcardCategorySerializer, FlashcardSerializer, FlashcardRequestSerializer, CreateFlashcardSerializer
 from image_handling.models import Image
 from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiParameter
 from environs import Env
@@ -122,7 +122,7 @@ class FlashcardListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(
-        request=FlashcardSerializer,
+        request=CreateFlashcardSerializer,
         responses={
             201: FlashcardSerializer,
             400: OpenApiResponse("Bad Request", description="Invalid input data."),
