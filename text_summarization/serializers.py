@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import serializers
 # from rest_framework.exceptions import ValidationError
 
@@ -7,6 +8,14 @@ from core.exceptions import ValidationError
 from text_extraction.models import ExtractedText
 
 
+prompt_rules = """Given the text below, create a summary, one which clear enough to help the user prepare for an exam:
+Use the following rules to format the output:
+1. Use bullet points to arrange points.
+2. Similar points should be grouped in paragraphs.
+# 3. Use '||~||' as the delimiter to seperate subsections.
+3. Format the response as a markdown.
+Text:
+"""
 class SummaryCreationSerializer(serializers.ModelSerializer):
 
     text_id = serializers.CharField(required=False)
@@ -18,19 +27,24 @@ class SummaryCreationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         extracted_text_obj = getattr(self, 'extracted_text', None)
+        text = prompt_rules
         # If 'text_id' was passed, get the text to be
         # summarized from the corresponding 'ExtractedText' model.
         if extracted_text_obj: 
-            text = extracted_text_obj.extracted_text
+            text += extracted_text_obj.extracted_text
         else:
-            text = validated_data.get('content')
-        print("Text:    ============= ", text)
+            text += validated_data.get('content')
+        # print("Text:    ============= ", text)
         summary_content = summarize_content(text)
+        # print(type(summary_content))
         data = {
             'extracted_text': extracted_text_obj,
             'summary_content': summary_content
         }
         return super().create(data)
+
+    # def process_summary_text(self, text):
+        # pass
 
     def validate(self, data):
         text_id = data.get('text_id')
@@ -58,7 +72,17 @@ class SummaryCreationSerializer(serializers.ModelSerializer):
 
 
 class SummarizedTextSerializer(serializers.ModelSerializer):
+    summary_content = serializers.SerializerMethodField()
 
     class Meta:
         model = Summary
         fields = ['summary_content']
+
+    def get_summary_content(self, obj):
+        i = 0
+        text = obj.summary_content
+        sections = text.split(settings.TS_DELIMITER)
+        while (i < len(sections)):
+            sections[i] = sections[i].strip()
+
+        return sections

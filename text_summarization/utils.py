@@ -21,6 +21,6 @@ def summarize_content(text):
     }
 
     model = TextGenerationModel.from_pretrained("text-bison@002")
-    response = model.predict(text, **parameters)
+    language_model_response = model.predict(text, **parameters)
 
-    return response
+    return language_model_response.text
