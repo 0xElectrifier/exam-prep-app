@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+from datetime import timedelta
 from environs import Env
 from pathlib import Path
 import os
@@ -48,6 +48,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
 AUTHENTICATION_METHOD = 'username'
+
+TS_DELIMITER = "||~||"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -109,6 +111,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'USER_ID_FIELD': 'user_id'
 }
 
