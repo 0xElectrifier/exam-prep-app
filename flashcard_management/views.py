@@ -9,6 +9,7 @@ from image_handling.models import Image
 from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiParameter
 from environs import Env
 import json
+import re
 
 env = Env()
 genai.configure(api_key=env.str("GOOGLE_GEMINI_API_KEY"))
@@ -224,7 +225,7 @@ class GenerateFlashcards(APIView):
         }
     )
     def post(self, request):
-        number_of_cards = int(request.data.get('number_of_cards', 15))
+        number_of_cards = int(request.data.get('number_of_cards', 10))
         text = request.data.get('text')
         category_id = request.data.get('category')
 
@@ -248,7 +249,8 @@ class GenerateFlashcards(APIView):
         3.  Final response MUST be in a JSON object with one key "results"
         4.  The value of the results key MUST be the question and answer array
         5.  omit any md formatting, i want the plane json string
-        Generate {number_of_cards} questions, and answers for those questions from the text below using the rules above.
+        6.  Do not Give me any Md at all, In  want the raw json string
+        Generate {number_of_cards} questions, and answers for those questions from the text below using the rules above strictly.
 
         {text}
         """
@@ -260,14 +262,22 @@ class GenerateFlashcards(APIView):
 
         results =[]
         try:
-            results = json.loads(response.result)
+            match = re.search(r'{([^⌂]*)}', str(response.result))
+            if match:
+                results = json.loads(match.group())
+            else:
+                return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except ValueError:
             response = genai.generate_text(
                 **defaults,
                 prompt=prompt
             )
             try: 
-                results = json.loads(response.result)
+                match = re.search(r'{([^⌂]*)}', response.result) 
+                if match:  
+                    results = json.loads(match.group())
+                else:
+                    return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             except ValueError as e:
                 print(e)
                 return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
