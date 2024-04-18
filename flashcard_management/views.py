@@ -260,6 +260,7 @@ class GenerateFlashcards(APIView):
         prompt=prompt
         )
 
+        print(response.result)
         results =[]
         try:
             match = re.search(r'{([^⌂]*)}', str(response.result))
