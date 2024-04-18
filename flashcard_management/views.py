@@ -134,11 +134,16 @@ class FlashcardListView(APIView):
         category_id = request.data.get('category')
         question = request.data.get('question')
         answer = request.data.get('answer')
-        if not image_id or not category_id or not question or not answer:
+
+        print(request.data)
+        if not category_id or not question or not answer:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         category = FlashcardCategory.objects.get(id=category_id)
-        image = Image.objects.get(image_id=image_id)
+        if image_id:
+            image = Image.objects.get(image_id=image_id)
+        else:
+            image=None
         new_flashcard = Flashcard.objects.create(
             category=category,
             image=image,
@@ -237,10 +242,17 @@ class GenerateFlashcards(APIView):
         category = FlashcardCategory.objects.get(id=category_id)
 
         prompt = f"""
-        Generate {number_of_cards} questions, and answers for those questions from the text below. Your response must be a list of python dicts each with a question key and an answer key i.e [{"{"}"question": str, "answer": str{"}"}] in json format.
+        Rules
+        1.  Each question and answer pair MUST be in the format {"{"}"question": str, "answer": str{"}"}
+        2.  All question and answer pair MUST be in one array
+        3.  Final response MUST be in a JSON object with one key "results"
+        4.  The value of the results key MUST be the question and answer array
+        5.  omit any md formatting, i want the plane json string
+        Generate {number_of_cards} questions, and answers for those questions from the text below using the rules above.
 
         {text}
         """
+
         response = genai.generate_text(
         **defaults,
         prompt=prompt
@@ -257,10 +269,11 @@ class GenerateFlashcards(APIView):
             try: 
                 results = json.loads(response.result)
             except ValueError as e:
+                print(e)
                 return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         response_data = []
-        for result in results:
+        for result in results["results"]:
             flashcard = Flashcard.objects.create(
                 category=category, 
                 user = request.user, 

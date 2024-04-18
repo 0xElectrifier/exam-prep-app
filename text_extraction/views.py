@@ -65,6 +65,7 @@ class TextExtraction(APIView):
                 data["extracted_text"] = data["extracted_text"].split("•⌂")
                 return Response(data, status=status.HTTP_201_CREATED)
         except Exception as e:
+            print(e)
             return Response({"error": f"Unexpected error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ExtractedTextList(APIView):
