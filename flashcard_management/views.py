@@ -227,7 +227,6 @@ class GenerateFlashcards(APIView):
         number_of_cards = int(request.data.get('number_of_cards', 15))
         text = request.data.get('text')
         category_id = request.data.get('category')
-        print(text)
 
         defaults = {
             'model': 'models/text-bison-001',
@@ -243,10 +242,17 @@ class GenerateFlashcards(APIView):
         category = FlashcardCategory.objects.get(id=category_id)
 
         prompt = f"""
-        Generate {number_of_cards} questions, and answers for those questions from the text below. Your response must be a list of python dicts each with a question key and an answer key i.e [{"{"}"question": str, "answer": str{"}"}] in json format.
+        Rules
+        1.  Each question and answer pair MUST be in the format {"{"}"question": str, "answer": str{"}"}
+        2.  All question and answer pair MUST be in one array
+        3.  Final response MUST be in a JSON object with one key "results"
+        4.  The value of the results key MUST be the question and answer array
+        5.  omit any md formatting, i want the plane json string
+        Generate {number_of_cards} questions, and answers for those questions from the text below using the rules above.
 
         {text}
         """
+
         response = genai.generate_text(
         **defaults,
         prompt=prompt
@@ -267,7 +273,7 @@ class GenerateFlashcards(APIView):
                 return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         response_data = []
-        for result in results:
+        for result in results["results"]:
             flashcard = Flashcard.objects.create(
                 category=category, 
                 user = request.user, 
