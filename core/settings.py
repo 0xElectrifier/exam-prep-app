@@ -33,7 +33,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'exam-prep-app.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'exam-prep-app.onrender.com', 'exam-prep-app-1.onrender.com']
 
 CORS_ALLOWED_ORIGINS = (
     'http://localhost:3000',
