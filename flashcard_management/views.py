@@ -268,7 +268,7 @@ class GenerateFlashcards(APIView):
                 results = json.loads(match.group())
             else:
                 return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except ValueError:
+        except Exception:
             response = genai.generate_text(
                 **defaults,
                 prompt=prompt
@@ -279,9 +279,9 @@ class GenerateFlashcards(APIView):
                     results = json.loads(match.group())
                 else:
                     return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            except ValueError as e:
+            except Exception as e:
                 print(e)
-                return Response({'error': 'Could not load questions. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'error': f"An error occurred: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         response_data = []
         for result in results["results"]:
